@@ -363,7 +363,7 @@ const debouncedScrollHandler = debounce(() => {
 
 window.addEventListener('scroll', debouncedScrollHandler);
 
-// Service Worker para PWA (opcional)
+// Service Worker para PWA
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js')
@@ -374,4 +374,89 @@ if ('serviceWorker' in navigator) {
                 console.log('SW registration failed: ', registrationError);
             });
     });
-} 
+}
+
+// Mobile App optimizations
+document.addEventListener('DOMContentLoaded', () => {
+    // Prevent double-tap zoom on buttons
+    const buttons = document.querySelectorAll('.btn, .nav-link');
+    buttons.forEach(button => {
+        button.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            button.click();
+        });
+    });
+
+    // Add touch feedback
+    buttons.forEach(button => {
+        button.addEventListener('touchstart', () => {
+            button.style.transform = 'scale(0.98)';
+        });
+        
+        button.addEventListener('touchend', () => {
+            button.style.transform = '';
+        });
+    });
+
+    // Prevent pull-to-refresh on mobile
+    let startY = 0;
+    let currentY = 0;
+    
+    document.addEventListener('touchstart', (e) => {
+        startY = e.touches[0].clientY;
+    });
+    
+    document.addEventListener('touchmove', (e) => {
+        currentY = e.touches[0].clientY;
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (scrollTop === 0 && currentY > startY) {
+            e.preventDefault();
+        }
+    }, { passive: false });
+
+    // Add haptic feedback for iOS
+    if ('vibrate' in navigator) {
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                navigator.vibrate(10);
+            });
+        });
+    }
+
+    // WhatsApp button optimizations
+    const whatsappBtn = document.querySelector('.whatsapp-btn');
+    if (whatsappBtn) {
+        // Add haptic feedback for WhatsApp button
+        if ('vibrate' in navigator) {
+            whatsappBtn.addEventListener('click', () => {
+                navigator.vibrate(20);
+            });
+        }
+
+        // Add touch feedback for WhatsApp button
+        whatsappBtn.addEventListener('touchstart', () => {
+            whatsappBtn.style.transform = 'scale(0.9)';
+        });
+        
+        whatsappBtn.addEventListener('touchend', () => {
+            whatsappBtn.style.transform = '';
+        });
+
+        // Hide WhatsApp button when menu is open
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (hamburger && navMenu) {
+            hamburger.addEventListener('click', () => {
+                if (navMenu.classList.contains('active')) {
+                    whatsappBtn.style.opacity = '0';
+                    whatsappBtn.style.pointerEvents = 'none';
+                } else {
+                    whatsappBtn.style.opacity = '1';
+                    whatsappBtn.style.pointerEvents = 'auto';
+                }
+            });
+        }
+    }
+}); 

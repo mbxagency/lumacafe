@@ -1,0 +1,35 @@
+{
+  "name": "Luma Café & Co",
+  "short_name": "Luma Café",
+  "description": "O seu café com luz própria no Juvevê, Curitiba",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1e3a8a",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "visual/logo.webp",
+      "sizes": "192x192",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "visual/logo.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["food", "lifestyle"],
+  "screenshots": [
+    {
+      "src": "visual/fachada.webp",
+      "sizes": "1280x720",
+      "type": "image/webp",
+      "form_factor": "wide"
+    }
+  ]
+} 
